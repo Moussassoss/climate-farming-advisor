@@ -1,20 +1,41 @@
-# main.py
-from fastapi import FastAPI, Query
-from weather import get_weather
-from recommender import recommend_crops
+# backend/main.py
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import requests
+from model import recommend_crops
 
 app = FastAPI()
 
-@app.get("/")
-def root():
-    return {"message": "Climate-Resilient Farming Advisor API"}
-
-@app.get("/weather")
-def fetch_weather(lat: float = Query(...), lon: float = Query(...)):
-    return get_weather(lat, lon)
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Later, replace with frontend domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/recommend")
-def get_recommendation(lat: float = Query(...), lon: float = Query(...)):
-    weather_data = get_weather(lat, lon)
-    crops = recommend_crops(weather_data)
-    return {"recommendations": crops, "weather": weather_data}
+def recommend(lat: float, lon: float):
+    # Fetch weather data using OpenWeatherMap API
+    api_key = "YOUR_OPENWEATHERMAP_API_KEY"
+    weather_url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+
+    response = requests.get(weather_url)
+    data = response.json()
+
+    temperature = data['main']['temp']
+    humidity = data['main']['humidity']
+    description = data['weather'][0]['description']
+
+    # Get crop recommendations
+    crops = recommend_crops(temperature, humidity)
+
+    return {
+        "recommendations": crops,
+        "weather": {
+            "temperature": temperature,
+            "humidity": humidity,
+            "description": description
+        }
+    }

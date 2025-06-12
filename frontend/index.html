@@ -1,0 +1,35 @@
+<script>
+  async function getRecommendations() {
+    const output = document.getElementById("output");
+    output.classList.remove("hidden");
+    output.innerHTML = "📍 Detecting your location...";
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        output.innerHTML = `📍 Your Location: <strong>${lat.toFixed(4)}, ${lon.toFixed(4)}</strong><br>🔄 Fetching recommendations...`;
+
+        try {
+          const response = await fetch(`http://localhost:8000/recommend?lat=${lat}&lon=${lon}`);
+          const data = await response.json();
+
+          const crops = data.recommendations.map(crop => `<li>${crop}</li>`).join("");
+
+          output.innerHTML = `
+            <p class="mt-4"><strong>✅ Recommended Crops:</strong></p>
+            <ul class="list-disc list-inside text-green-700">${crops}</ul>
+            <p class="mt-4"><strong>🌦 Current Weather:</strong> ${data.weather.temperature}°C, ${data.weather.humidity}% humidity, ${data.weather.description}</p>
+          `;
+        } catch (err) {
+          output.innerHTML = "❌ Failed to fetch recommendations. Please try again.";
+        }
+      }, () => {
+        output.innerHTML = "❌ Location access denied.";
+      });
+    } else {
+      output.innerHTML = "❌ Geolocation is not supported by this browser.";
+    }
+  }
+</script>
