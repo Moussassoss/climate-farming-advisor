@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { ApiResponse, Location, ApiError } from '../types';
 
+
+
 interface FarmingDataHook {
   data: ApiResponse | null;
   error: string | null;

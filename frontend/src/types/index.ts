@@ -2,7 +2,7 @@ export interface WeatherData {
   temperature: number;
   humidity: number;
   rain: number;
-  sky_description: string;
+  description: string;
 }
 
 export interface CropRecommendation {
@@ -19,7 +19,7 @@ export interface Location {
 }
 
 export interface ApiResponse {
-  weather: WeatherData;
+  weather?: WeatherData;
   recommendations: CropRecommendation[];
 }
 
