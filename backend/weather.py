@@ -13,5 +13,6 @@ def get_weather(lat, lon):
     return {
         "temperature": data["main"]["temp"],
         "humidity": data["main"]["humidity"],
-        "description": data["weather"][0]["description"]
+        "description": data["weather"][0]["description"],
+        "rain": data.get("rain", {}).get("1h", 0)  # rain in mm last 1 hour
     }

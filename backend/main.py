@@ -10,7 +10,7 @@ load_dotenv()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Later, replace with frontend domain
+    allow_origins=["http://localhost:5500"],  # Later, replace with frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,15 +28,17 @@ def recommend(lat: float, lon: float):
     temperature = data['main']['temp']
     humidity = data['main']['humidity']
     description = data['weather'][0]['description']
+    rain = data.get('rain', {}).get('1h', 0) 
 
     # Get crop recommendations
-    crops = recommend_crops(temperature, humidity)
+    crops = recommend_crops(temperature, humidity, rain)
 
     return {
         "recommendations": crops,
         "weather": {
             "temperature": temperature,
             "humidity": humidity,
-            "description": description
+            "description": description,
+            "rain": rain
         }
     }
