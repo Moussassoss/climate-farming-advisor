@@ -1,35 +1,59 @@
-<script>
-  async function getRecommendations() {
-    const output = document.getElementById("output");
-    output.classList.remove("hidden");
-    output.innerHTML = "📍 Detecting your location...";
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Climate-Resilient Farming Advisor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 text-gray-800 min-h-screen flex flex-col items-center justify-center p-4">
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
+  <div class="max-w-xl w-full text-center">
+    <h1 class="text-3xl font-bold mb-4">🌾 Climate-Resilient Farming Advisor</h1>
+    <p class="mb-6 text-lg">Click the button to get crop recommendations based on your current location.</p>
+    
+    <button 
+      onclick="getRecommendations()" 
+      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow-lg transition">
+      Get Recommendations
+    </button>
 
-        output.innerHTML = `📍 Your Location: <strong>${lat.toFixed(4)}, ${lon.toFixed(4)}</strong><br>🔄 Fetching recommendations...`;
+    <div id="output" class="mt-8 p-4 bg-white rounded shadow-md text-left hidden"></div>
+  </div>
 
-        try {
-          const response = await fetch(`http://localhost:8000/recommend?lat=${lat}&lon=${lon}`);
-          const data = await response.json();
+    <script>
+    async function getRecommendations() {
+        const output = document.getElementById("output");
+        output.classList.remove("hidden");
+        output.innerHTML = "📍 Detecting your location...";
 
-          const crops = data.recommendations.map(crop => `<li>${crop}</li>`).join("");
+        if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-          output.innerHTML = `
-            <p class="mt-4"><strong>✅ Recommended Crops:</strong></p>
-            <ul class="list-disc list-inside text-green-700">${crops}</ul>
-            <p class="mt-4"><strong>🌦 Current Weather:</strong> ${data.weather.temperature}°C, ${data.weather.humidity}% humidity, ${data.weather.description}</p>
-          `;
-        } catch (err) {
-          output.innerHTML = "❌ Failed to fetch recommendations. Please try again.";
+            output.innerHTML = `📍 Your Location: <strong>${lat.toFixed(4)}, ${lon.toFixed(4)}</strong><br>🔄 Fetching recommendations...`;
+
+            try {
+            const response = await fetch(`http://127.0.0.1:8000/recommend?lat=${lat}&lon=${lon}`);
+            const data = await response.json();
+
+            const crops = data.recommendations.map(crop => `<li>${crop}</li>`).join("");
+
+            output.innerHTML = `
+                <p class="mt-4"><strong>✅ Recommended Crops:</strong></p>
+                <ul class="list-disc list-inside text-green-700">${crops}</ul>
+                <p class="mt-4"><strong>🌦 Current Weather:</strong> ${data.weather.temperature}°C, ${data.weather.humidity}% humidity, ${data.weather.description}</p>
+            `;
+            } catch (err) {
+            output.innerHTML = "❌ Failed to fetch recommendations. Please try again.";
+            }
+        }, () => {
+            output.innerHTML = "❌ Location access denied.";
+        });
+        } else {
+        output.innerHTML = "❌ Geolocation is not supported by this browser.";
         }
-      }, () => {
-        output.innerHTML = "❌ Location access denied.";
-      });
-    } else {
-      output.innerHTML = "❌ Geolocation is not supported by this browser.";
     }
-  }
-</script>
+    </script>
+</body>
+</html>

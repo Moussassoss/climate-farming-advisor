@@ -1,11 +1,12 @@
-# backend/main.py
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 from model import recommend_crops
 
 app = FastAPI()
-
+load_dotenv()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
@@ -18,7 +19,7 @@ app.add_middleware(
 @app.get("/recommend")
 def recommend(lat: float, lon: float):
     # Fetch weather data using OpenWeatherMap API
-    api_key = "YOUR_OPENWEATHERMAP_API_KEY"
+    api_key =  os.getenv("OPENWEATHER_API_KEY")
     weather_url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
 
     response = requests.get(weather_url)
