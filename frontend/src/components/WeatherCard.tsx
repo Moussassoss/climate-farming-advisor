@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloud, Thermometer, Droplets, CloudRain, Sun, Wind, Eye, Gauge } from 'lucide-react';
+import { Cloud, Thermometer, Droplets, CloudRain, Sun } from 'lucide-react';
 import { WeatherData } from '../types';
 
 interface WeatherCardProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2, Brain, Zap } from 'lucide-react';
+import { Brain, Zap } from 'lucide-react';
 
 interface LoaderProps {
   message?: string;

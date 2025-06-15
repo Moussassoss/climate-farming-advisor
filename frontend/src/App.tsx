@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LocationButton from './components/LocationButton';
@@ -38,7 +38,7 @@ function App() {
   const errorMessage = locationError || dataError;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50 to-pink-50">
       <Header />
       
       <main className="container mx-auto px-6 py-12 max-w-7xl">
@@ -131,7 +131,7 @@ function App() {
               
               <div className="relative">
                 <div className="text-9xl mb-8 animate-bounce">🚀</div>
-                <h2 className="text-5xl md:text-7xl font-black text-gray-800 mb-8 bg-gradient-to-r from-emerald-600 via-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient">
+                <h2 className="text-5xl md:text-7xl font-black text-gray-800 mb-8 bg-gradient-to-r from-emerald-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient">
                   Welcome to the Future of Farming
                 </h2>
                 <p className="text-2xl text-gray-600 mb-16 max-w-4xl mx-auto leading-relaxed">
