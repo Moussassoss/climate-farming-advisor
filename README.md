@@ -17,7 +17,7 @@ An AI-powered web application that helps farmers make data-driven decisions by p
 ## 🌄 Screenshots
 
 ### 🏠 Homepage
-![Homepage](assets/iamge.png)
+![Homepage](assets/image.png)
 
 ### 🌱 Crop Recommendations
 ![Recommendations](assets/map.png)
